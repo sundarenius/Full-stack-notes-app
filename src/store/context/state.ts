@@ -1,0 +1,25 @@
+const state = {
+  currentCategory: 'All',
+  currentNote: {
+    id: 0,
+    title: 'New note',
+    text: '',
+    category: 'Randoms',
+    color: '',
+    modified: 0
+  },
+  allNotes: [],
+  isAuth: true, // set to true when developing the site is done,
+  allCategories: [],
+  colors: [
+    'red lighten-1',
+    'purple lighten-1',
+    'cyan lighten-1',
+    'blue ligten-2',
+    'indigo lighten-1',
+    'teal lighten-1',
+    'lime'
+  ]
+}
+
+export default state

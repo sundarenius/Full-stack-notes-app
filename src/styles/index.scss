@@ -1,0 +1,28 @@
+.sidebar-width {
+  width: var(--sidebar-width)!important;
+}
+.main-content-style {
+  margin-left: calc(var(--sidebar-width) + 10px)!important;
+  margin-top: 60px;
+}
+.header-style {
+  margin-left: calc(var(--sidebar-width) + 10px)!important;
+  background: transparent!important;
+}
+.close-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  &:hover {
+    background: #777777;
+  }
+}
+.v-textarea textarea {
+  min-height: 55vh!important;
+}
+.active-category {
+  box-shadow: 1px 1px 4px lightgrey;
+}
+.v-menu__content.theme--dark.menuable__content__active.v-autocomplete__content {
+  z-index: 80!important;
+}
