@@ -25,7 +25,7 @@
           v-for="nav in getNavigationItems"
           :key="nav.id"
           link
-          @click="setActiveCategory(nav.category)"
+          @click="setActiveCategoryMethod(nav.category)"
           :class="{ 'active-category' : isActive(nav.category) }"
         >
           <v-list-item-icon>
@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { Mutation } from 'vuex-class'
+import { Mutation, Action } from 'vuex-class'
 import { mapState } from 'vuex'
 import { CategoriesContext, NotesContext } from '@/utils/interfaces'
 
@@ -57,9 +57,15 @@ import { CategoriesContext, NotesContext } from '@/utils/interfaces'
 })
 export default class Sidebar extends Vue {
   @Mutation('setActiveCategory') setActiveCategory: any
+  @Action('hideShowEditorContent') hideShowEditorContent: any
 
   public allCategories?: CategoriesContext[]
   private currentCategory!: string
+
+  setActiveCategoryMethod (category: string) {
+    this.hideShowEditorContent(false)
+    this.setActiveCategory(category)
+  }
 
   textColor (color: string): string {
     const splitted = (color && color.split(' ')[0])

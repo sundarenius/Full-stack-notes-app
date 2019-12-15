@@ -42,7 +42,7 @@ export default class App extends Vue {
 
   created () {
     console.log('created from app.vue')
-    setUpCssVars()
+    setUpCssVars(undefined, undefined)
     this.setInitialData()
     this.$vuetify.theme.dark = true
   }

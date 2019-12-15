@@ -28,3 +28,8 @@ export interface ModifyNotesContext {
   color?: string,
   modified: number
 }
+
+export interface SetCategoryColorContext {
+  category: string,
+  color: string
+}

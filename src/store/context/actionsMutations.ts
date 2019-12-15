@@ -1,5 +1,5 @@
-import { ActionContext, NotesContext, CategoriesContext, ModifyNotesContext } from '@/utils/interfaces'
-import { getCleanCategories } from '@/utils/helpers'
+import { ActionContext, NotesContext, CategoriesContext, SetCategoryColorContext } from '@/utils/interfaces'
+import { getCleanCategories, setUpCssVars } from '@/utils/helpers'
 import MockNotes from '@/utils/Mocks'
 import uuid from 'uuid/v4'
 
@@ -15,28 +15,32 @@ const mutations = {
   },
   setCurrentNote (state: any, note: object) {
     state.currentNote = note
+  },
+  showEditorContent (state: any, payload: boolean) {
+    state.showEditorContent = payload
   }
 }
 
 const actions = {
   setInitialData: async ({ commit, state }: ActionContext) => {
-    // API GET AWAIT (Use mocknotes during the time)
+    // API GET AWAIT -- use MOCK notes intil that
+    console.log('setInitialData action')
     const notesRes = MockNotes
     commit('setAllNotes', notesRes)
     commit('setCategories', getCleanCategories(notesRes))
   },
-  updateAllData: async ({ commit, state }: ActionContext) => {
+  updateAllData: async ({ commit, state }: ActionContext, newNotes: NotesContext) => {
     // API SEND AWAIT
-    commit('setAllNotes', state.allNotes)
+    console.log('updateAllData action')
+    commit('setAllNotes', newNotes)
     commit('setCategories', getCleanCategories(state.allNotes))
   },
   updateNotes ({ commit, state, dispatch }: ActionContext) {
     const newNotes = state.allNotes.filter((note: any) => note.id !== state.currentNote.id)
     newNotes.push(state.currentNote)
-    commit('setAllNotes', newNotes)
-    dispatch('updateAllData')
+    dispatch('updateAllData', newNotes)
   },
-  setCurrentNote ({ state, commit, dispatch }: ActionContext, modifiedProp: any) {
+  updateCurrentNote ({ state, commit, dispatch }: ActionContext, modifiedProp: any) {
     const currentNote = {
       ...state.currentNote,
       ...modifiedProp
@@ -44,9 +48,27 @@ const actions = {
     if (currentNote.id === 0) {
       currentNote.id = uuid()
     }
+    if (!currentNote.color) {
+      const findColor = state.allNotes.find((val: any) => val.category === currentNote.category)
+      currentNote.color = (findColor && findColor.color) || 'primary lighten-1'
+    }
     currentNote.modified = new Date().getTime()
     commit('setCurrentNote', currentNote)
     dispatch('updateNotes')
+  },
+  setCategoryColors ({ state, dispatch }: ActionContext, payload: SetCategoryColorContext) {
+    const updatedNotes = state.allNotes.map((note: any) => {
+      if (note.category === payload.category) {
+        note.color = payload.color
+      }
+      return note
+    })
+    dispatch('updateAllData', updatedNotes)
+  },
+  hideShowEditorContent ({ commit }: any, payload: boolean) {
+    const height = payload ? '80vh' : '10vh'
+    setUpCssVars(undefined, height)
+    commit('showEditorContent', payload)
   }
 }
 

@@ -14,19 +14,19 @@
       />
 
       <v-spacer />
-      <v-btn class="success lighten-2 secondary--text px-5">
+      <v-btn @click="setNewNote" class="success lighten-2 secondary--text px-5">
         New note
         <v-icon small class="ml-1">mdi-plus</v-icon>
       </v-btn>
-      <v-btn @click="test" class="success lighten-2 secondary--text px-5">
+      <v-btn rounded @click="test" class="ml-3 success lighten-2 secondary--text">
         TEST
-        <v-icon small class="ml-1">mdi-plus</v-icon>
       </v-btn>
     </v-app-bar>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
+
 export default {
   name: 'Header',
   data: () => ({
@@ -39,9 +39,28 @@ export default {
     }
   }),
   methods: {
+    ...mapMutations([
+      'setCurrentNote',
+      'showEditorContent'
+    ]),
+    ...mapActions([
+      'hideShowEditorContent'
+    ]),
     test () {
       console.log('test')
       console.log(this.allCategories)
+    },
+    setNewNote () {
+      const note = {
+        id: 0,
+        title: 'New note',
+        text: '',
+        category: 'Randoms',
+        color: '',
+        modified: 0
+      }
+      this.setCurrentNote(note)
+      this.hideShowEditorContent(true)
     }
   },
   computed: {

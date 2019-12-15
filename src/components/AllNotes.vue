@@ -1,6 +1,9 @@
 <template>
   <div class="card-container-overview">
-    <v-card :class="{ 'overview-card-style mb-2' : true, [notes.color] : true }" :key="notes.id" v-for="notes in AllNotes">
+    <v-card
+      @click="setCurrentNoteMethod(notes)"
+      :class="{ 'overview-card-style mb-2' : true, [notes.color] : true }"
+      :key="notes.id" v-for="notes in AllNotes">
       <div class="close-icon">
         <v-icon>mdi-close-circle</v-icon>
       </div>
@@ -27,6 +30,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import { Mutation, Action } from 'vuex-class'
 import { mapState } from 'vuex'
 import { NotesContext } from '@/utils/interfaces'
 
@@ -41,8 +45,16 @@ import { NotesContext } from '@/utils/interfaces'
 })
 
 export default class AllNotes extends Vue {
+  @Mutation('setCurrentNote') setCurrentNote: any
+  @Action('hideShowEditorContent') hideShowEditorContent: any
+
   private colors!: string[]
   private allNotesState!: NotesContext[]
+
+  setCurrentNoteMethod (notes: any) {
+    this.setCurrentNote(notes)
+    this.hideShowEditorContent(true)
+  }
 
   getModifiedTime (modified: number) {
     const today = this.todayDate(modified)

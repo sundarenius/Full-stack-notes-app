@@ -1,11 +1,12 @@
 import { NotesContext, CategoriesContext } from '@/utils/interfaces'
 import { dynamicSort } from '../../random_modules/index.js'
 
-export const setUpCssVars = (theme: undefined | string = 'default'): any => {
+export const setUpCssVars = (theme: undefined | string = 'default', height: any): any => {
   const themeObj: any = {}
   switch (theme) {
     case 'default':
       themeObj['--sidebar-width'] = '180px'
+      themeObj['--editor-height'] = height || '80vh'
       break
     default:
       break

@@ -2,47 +2,57 @@
   <Fragment>
     <v-layout fill-height fluid class="editor-container">
       <v-card class="the-editor py-5 px-5 secondary lighten-3">
-        <v-card-title class="editor-header">
-          <v-layout>
-            <v-row>
-              <v-col cols="6">
-                <v-text-field
-                  label="Title"
-                  :value="title"
-                  outlined
-                  @change="setTitle"
-                  color="lime"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-combobox
-                  label="Category"
-                  outlined
-                  :items="getCategories"
-                  color="lime"
-                  v-model="choosedCategory"
-                ></v-combobox>
-              </v-col>
-            </v-row>
-          </v-layout>
-          <v-layout v-show="choosedCategory.length" style="margin-top:-35px">
-            <div class="body-1">
-              Category color
-            </div>
-            <v-row class="ml-2 category-color-picker">
-              <div :class="{ [x] : true }" :key="x" v-for="x in colors"></div>
-            </v-row>
-          </v-layout>
-        </v-card-title>
-        <v-textarea
-          name="input-7-1"
-          label="Notes"
-          placeholder="Start writing..."
-          hint="..."
-          color="lime"
-          style="height:500px"
-          v-model="notesText"
-        ></v-textarea>
+        <div v-show="!showEditorContent" class="hidden-content">
+          <h3>{{ title }} - {{ choosedCategory }}</h3>
+          <div @click="showContent" style="margin-top:-6px">
+            <v-btn large icon>
+              <v-icon large>mdi-chevron-down</v-icon>
+            </v-btn>
+          </div>
+        </div>
+        <div v-show="showEditorContent">
+          <v-card-title class="editor-header">
+            <v-layout>
+              <v-row>
+                <v-col cols="6">
+                  <v-text-field
+                    label="Title"
+                    :value="title"
+                    outlined
+                    @change="setTitle"
+                    color="lime"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-combobox
+                    label="Category"
+                    outlined
+                    :items="getCategories"
+                    color="lime"
+                    v-model="choosedCategory"
+                  ></v-combobox>
+                </v-col>
+              </v-row>
+            </v-layout>
+            <v-layout v-show="choosedCategory.length" style="margin-top:-35px">
+              <div class="body-1">
+                Category color
+              </div>
+              <v-row class="ml-2 category-color-picker">
+                <div @click="setCategoryColor(x)" :class="{ [x] : true }" :key="x" v-for="x in colors"></div>
+              </v-row>
+            </v-layout>
+          </v-card-title>
+          <v-textarea
+            name="input-7-1"
+            label="Notes"
+            placeholder="Start writing..."
+            hint="..."
+            color="lime"
+            style="height:500px"
+            v-model="notesText"
+          ></v-textarea>
+        </div>
       </v-card>
     </v-layout>
   </Fragment>
@@ -50,7 +60,7 @@
 
 <script lang="ts">
 import { Fragment } from 'vue-fragment'
-import { Action, Mutation } from 'vuex-class'
+import { Action } from 'vuex-class'
 import { mapState } from 'vuex'
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { CategoriesContext, NotesContext } from '@/utils/interfaces'
@@ -66,23 +76,31 @@ import { CategoriesContext, NotesContext } from '@/utils/interfaces'
       allCategories: ({ context }: any) => context.allCategories,
       colors: ({ context }: any) => context.colors,
       currentNote: ({ context }: any) => context.currentNote,
+      showEditorContent: ({ context }: any) => context.showEditorContent
     })
   }
 })
 
 export default class EditorNote extends Vue {
   @Action('modifyNotes') modifyNotes: any
-  @Action('setCurrentNote') setCurrentNote: any
+  @Action('updateCurrentNote') updateCurrentNote: any
+  @Action('setCategoryColors') setCategoryColors: any
+  @Action('hideShowEditorContent') hideShowEditorContent: any
 
   allCategories!: CategoriesContext[]
   currentNote!: NotesContext
   allNotes!: object[]
+  showEditorContent!: boolean
+
+  showContent () {
+    this.hideShowEditorContent(true)
+  }
 
   get choosedCategory () {
     return this.currentNote.category
   }
   set choosedCategory (val: string) {
-    this.setCurrentNote({
+    this.updateCurrentNote({
       category: val
     })
   }
@@ -91,7 +109,7 @@ export default class EditorNote extends Vue {
     return this.currentNote.text
   }
   set notesText (val: string) {
-    this.setCurrentNote({
+    this.updateCurrentNote({
       text: val
     })
   }
@@ -100,14 +118,29 @@ export default class EditorNote extends Vue {
     return this.currentNote.title
   }
   set title (val: string) {
-    this.setCurrentNote({
+    this.updateCurrentNote({
       title: val
     })
+  }
+
+  get showEditorContentGetSet () {
+    return this.showEditorContent
+  }
+  set showEditorContentGetSet (val: boolean) {
+    this.hideShowEditorContent(val)
   }
 
   get getCategories () {
     return this.allCategories.map((val) => val.category).splice(1)
   }
+
+  setCategoryColor (color: string) {
+    const categoryColor = {
+      category: this.choosedCategory,
+      color
+    }
+    this.setCategoryColors(categoryColor)
+  } 
 
   setTitle (val: string) {
     this.title = val
@@ -118,7 +151,7 @@ export default class EditorNote extends Vue {
 <style lang="scss" scoped>
 .editor-container {
   width: 100%;
-  height: 80vh;
+  height: var(--editor-height);
   .the-editor {
     width: 100%!important;
   }
@@ -141,5 +174,9 @@ export default class EditorNote extends Vue {
 }
 .v-select-list {
   z-index: 400;
+}
+.hidden-content {
+  display: flex;
+  justify-content: space-between;
 }
 </style>
