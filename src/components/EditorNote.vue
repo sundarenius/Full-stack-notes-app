@@ -140,7 +140,7 @@ export default class EditorNote extends Vue {
       color
     }
     this.setCategoryColors(categoryColor)
-  } 
+  }
 
   setTitle (val: string) {
     this.title = val
