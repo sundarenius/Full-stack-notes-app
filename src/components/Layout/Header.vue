@@ -18,7 +18,7 @@
         New note
         <v-icon small class="ml-1">mdi-plus</v-icon>
       </v-btn>
-      <v-btn rounded @click="test" class="ml-3 success lighten-2 secondary--text">
+      <v-btn v-if="0" rounded @click="test" class="ml-3 success lighten-2 secondary--text">
         TEST
       </v-btn>
     </v-app-bar>
@@ -74,5 +74,6 @@ export default {
 <style lang="scss">
 .header-style.v-app-bar--fixed.v-app-bar--is-scrolled {
   background-color: #303030 !important;
+  z-index: 100;
 }
 </style>

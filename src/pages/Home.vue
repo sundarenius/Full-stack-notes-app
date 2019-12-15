@@ -5,6 +5,9 @@
         <v-layout class="v-card secondary px-5 py-5">
           <EditorNote />
         </v-layout>
+        <div v-if="!showEditorContent" class="my-5">
+          <NoteCard :xs="12" :sm="4" :md="6" :allNotes="allNotes" />
+        </div>
       </v-col>
       <v-col cols="4">
         <v-layout class="v-card secondary px-5 py-5">
@@ -17,21 +20,37 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import { mapState } from 'vuex'
 import LoginModal from '@/components/LoginModal.vue'
 import AllNotes from '@/components/AllNotes.vue'
 import EditorNote from '@/components/EditorNote.vue'
+import NoteCard from '@/components/NoteCard'
+import { NotesContext } from '@/utils/interfaces'
 
 @Component({
   name: 'Home',
   components: {
     AllNotes,
-    EditorNote
+    EditorNote,
+    NoteCard
+  },
+  computed: {
+    ...mapState({
+      showEditorContent: ({ context }: any): boolean => context.showEditorContent,
+      allNotesState: ({ context }: any) => context.allNotes,
+      currentCategory: ({ context }: any) => context.currentCategory
+    })
   }
 })
 
 export default class Home extends Vue {
-  created () {
-    // console.log('created from home.vue')
+  allNotesState!: NotesContext[]
+  currentCategory!: string
+
+  get allNotes (): NotesContext[] {
+    return [ ...this.allNotesState ].sort((a, b) => {
+      return b.modified - a.modified
+    }).filter((el: any) => (el.category === this.currentCategory) || this.currentCategory === 'All')
   }
 }
 </script>

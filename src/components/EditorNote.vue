@@ -39,7 +39,11 @@
                 Category color
               </div>
               <v-row class="ml-2 category-color-picker">
-                <div @click="setCategoryColor(x)" :class="{ [x] : true }" :key="x" v-for="x in colors"></div>
+                <div
+                  @click="setCategoryColor(x)"
+                  :class="{ 'active' : x === currentNote.color, [x] : true }"
+                  :key="x"
+                  v-for="x in colors"></div>
               </v-row>
             </v-layout>
           </v-card-title>
@@ -60,7 +64,7 @@
 
 <script lang="ts">
 import { Fragment } from 'vue-fragment'
-import { Action } from 'vuex-class'
+import { Action, Mutation } from 'vuex-class'
 import { mapState } from 'vuex'
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { CategoriesContext, NotesContext } from '@/utils/interfaces'
@@ -86,6 +90,7 @@ export default class EditorNote extends Vue {
   @Action('updateCurrentNote') updateCurrentNote: any
   @Action('setCategoryColors') setCategoryColors: any
   @Action('hideShowEditorContent') hideShowEditorContent: any
+  @Mutation('setActiveCategory') setActiveCategory: any
 
   allCategories!: CategoriesContext[]
   currentNote!: NotesContext
@@ -93,10 +98,12 @@ export default class EditorNote extends Vue {
   showEditorContent!: boolean
 
   showContent () {
+    this.setActiveCategory(this.currentNote.category)
     this.hideShowEditorContent(true)
   }
 
   get choosedCategory () {
+    this.setActiveCategory(this.currentNote.category)
     return this.currentNote.category
   }
   set choosedCategory (val: string) {
@@ -166,10 +173,13 @@ export default class EditorNote extends Vue {
     z-index: 40;
     padding: 5px 15px;
     height: 20px;
-    box-shadow: 1px 1px 3px lightgray;
     margin: 5px 5px;
     cursor: pointer;
     border-radius: 5px;
+    &.active {
+      box-shadow: 1px 1px 5px white;
+      transform: scale(1.1);
+    }
   }
 }
 .v-select-list {
