@@ -3,7 +3,7 @@
     <v-layout fill-height fluid class="editor-container">
       <v-card class="the-editor py-5 px-5 secondary lighten-3">
         <div v-show="!showEditorContent" class="hidden-content">
-          <h3>{{ title }} - {{ choosedCategory }}</h3>
+          <h3 style="margin-top:3px">{{ title }} - {{ choosedCategory }}</h3>
           <div @click="showContent" style="margin-top:-6px">
             <v-btn large icon>
               <v-icon large>mdi-chevron-down</v-icon>

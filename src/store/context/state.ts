@@ -1,4 +1,5 @@
 const state = {
+  isAuth: true, // set to true when developing the site is done,
   currentCategory: 'All',
   currentNote: {
     id: 0,
@@ -9,7 +10,6 @@ const state = {
     modified: 0
   },
   allNotes: [],
-  isAuth: true, // set to true when developing the site is done,
   allCategories: [],
   colors: [
     'red lighten-1',

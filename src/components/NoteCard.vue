@@ -4,9 +4,9 @@
       <v-col :xs="xs" :sm="sm" :md="md" :key="notes.id" v-for="notes in allNotes">
         <v-card
           @click="setCurrentNoteMethod(notes)"
-          :class="{ 'overview-card-style mb-2' : true, [notes.color] : true }"
+          :class="{ 'overview-card-style' : true, [notes.color] : true }"
           >
-          <div class="close-icon">
+          <div @click="deleteNote(notes)" class="close-icon">
             <v-icon>mdi-close-circle</v-icon>
           </div>
           <v-card-title justify-center>
@@ -36,23 +36,39 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { NotesContext } from '@/utils/interfaces'
 import { Mutation, Action } from 'vuex-class'
+import { mapState } from 'vuex'
 
 @Component({
-  name: 'Note-card'
+  name: 'Note-card',
+  computed: {
+    ...mapState({
+      allNotesState: ({ context }: any) => context.allNotes
+    })
+  }
 })
 
 export default class NoteCard extends Vue {
   @Mutation('setCurrentNote') setCurrentNote: any
   @Action('hideShowEditorContent') hideShowEditorContent: any
-
+  @Action('updateAllData') updateAllData: any
   @Prop(Array) readonly allNotes: any
   @Prop([ String, Number ]) readonly xs: any
   @Prop([ String, Number ]) readonly md: any
   @Prop([ String, Number ]) readonly sm: any
+  allNotesState!: any
 
   setCurrentNoteMethod (notes: any) {
     this.setCurrentNote(notes)
     this.hideShowEditorContent(true)
+  }
+
+  deleteNote (notes: any) {
+    console.log(notes)
+    console.log('deleteNote')
+    const newNotes = [
+      ...this.allNotesState
+    ].filter((val: any) => val.id !== notes.id)
+    this.updateAllData(newNotes)
   }
 
   getModifiedTime (modified: number) {

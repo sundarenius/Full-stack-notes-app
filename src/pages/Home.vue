@@ -10,8 +10,9 @@
         </div>
       </v-col>
       <v-col cols="4">
-        <v-layout class="v-card secondary px-5 py-5">
+        <v-layout class="v-card secondary px-5 py-5 allnotes-section">
           <AllNotes />
+          <div class="bottom-div"></div>
         </v-layout>
       </v-col>
     </v-row>
@@ -54,3 +55,16 @@ export default class Home extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.allnotes-section {
+  position: relative;
+  height: 85vh;
+  overflow: scroll;
+  .bottom-div {
+    height: 10px;
+    width: 100%;
+    background: green;
+  }
+}
+</style>

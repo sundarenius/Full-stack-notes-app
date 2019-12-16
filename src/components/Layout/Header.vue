@@ -5,12 +5,15 @@
       elevate-on-scroll
       class="header-style"
     >
-      <v-text-field
+      <v-autocomplete
+        :items="searchInputResult"
         solo-inverted
         flat
         hide-details
+        @change="searchInputChange"
         label="Search"
         prepend-inner-icon="mdi-magnify"
+        v-model="searchInput"
       />
 
       <v-spacer />
@@ -18,55 +21,84 @@
         New note
         <v-icon small class="ml-1">mdi-plus</v-icon>
       </v-btn>
+      <v-btn @click="logOut" outlined class="ml-3 secondary--text" icon>
+        <v-icon class="white--text">mdi-logout</v-icon>
+      </v-btn>
       <v-btn v-if="0" rounded @click="test" class="ml-3 success lighten-2 secondary--text">
         TEST
       </v-btn>
     </v-app-bar>
 </template>
 
-<script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+<script lang="ts">
+import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Mutation, Action } from 'vuex-class'
+import { mapState } from 'vuex'
+import { NotesContext, CategoriesContext } from '@/utils/interfaces'
 
-export default {
+@Component({
   name: 'Header',
-  data: () => ({
-    primaryDrawer: {
-      model: null,
-      type: 'default (no property)',
-      clipped: false,
-      floating: false,
-      mini: false,
-    }
-  }),
-  methods: {
-    ...mapMutations([
-      'setCurrentNote',
-      'showEditorContent'
-    ]),
-    ...mapActions([
-      'hideShowEditorContent'
-    ]),
-    test () {
-      console.log('test')
-      console.log(this.allCategories)
-    },
-    setNewNote () {
-      const note = {
-        id: 0,
-        title: 'New note',
-        text: '',
-        category: 'Randoms',
-        color: '',
-        modified: 0
-      }
-      this.setCurrentNote(note)
-      this.hideShowEditorContent(true)
-    }
-  },
   computed: {
     ...mapState({
-      allCategories: ({ context }) => context.allCategories
+      allCategories: ({ context }: any) => context.allCategories,
+      allNotes: ({ context }: any) => context.allNotes
     })
+  }
+})
+
+export default class Header extends Vue {
+  @Mutation('setCurrentNote') setCurrentNote: any
+  @Mutation('showEditorContent') showEditorContent: any
+  @Action('hideShowEditorContent') hideShowEditorContent: any
+  @Action('logOut') logOut: any
+
+  allNotes!: NotesContext[]
+  allCategories!: CategoriesContext[]
+  searchInput: string = ''
+  primaryDrawer: object = {
+    model: null,
+    clipped: false,
+  }
+
+  @Watch('searchInput')
+  onSearchInput (input: string) {
+    console.log(input)
+  }
+
+  setNote (note: NotesContext) {
+    this.setCurrentNote(note)
+    this.hideShowEditorContent(true)
+  }
+  searchInputChange (notes: string) {
+    const splitTitleNText = notes.split(' - ')
+    const matchNote = this.allNotes.filter((note: any) => {
+      const removeEnd: any = splitTitleNText[1].split('...')
+      removeEnd.pop()
+      return note.title === splitTitleNText[0] && note.text.includes(removeEnd.join(' '))
+    })[0]
+    this.setNote(matchNote)
+    this.searchInput = ''
+  }
+  test () {
+    console.log('test')
+    console.log(this.allCategories)
+  }
+  setNewNote () {
+    const note = {
+      id: 0,
+      title: 'New note',
+      text: '',
+      category: 'Randoms',
+      color: '',
+      modified: 0
+    }
+    this.setNote(note)
+  }
+
+  get searchInputResult (): string[] {
+    const textArr = this.allNotes.map((note: any) => `${note.title} - ${note.text.substr(0, 65)}...`)
+    .filter((val: string) => val.includes(this.searchInput))
+    return textArr
   }
 }
 </script>

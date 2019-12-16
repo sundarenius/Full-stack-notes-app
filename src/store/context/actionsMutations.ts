@@ -18,10 +18,16 @@ const mutations = {
   },
   showEditorContent (state: any, payload: boolean) {
     state.showEditorContent = payload
+  },
+  logOut (state: any) {
+    state.isAuth = false
   }
 }
 
 const actions = {
+  logOut ({ commit }: ActionContext) {
+    commit('logOut')
+  },
   setInitialData: async ({ commit, state }: ActionContext) => {
     // API GET AWAIT -- use MOCK notes intil that
     console.log('setInitialData action')
@@ -29,18 +35,22 @@ const actions = {
     commit('setAllNotes', notesRes)
     commit('setCategories', getCleanCategories(notesRes))
   },
-  updateAllData: async ({ commit, state }: ActionContext, newNotes: NotesContext) => {
+  updateAllData: async ({ commit }: ActionContext, newNotes: NotesContext) => {
     // API SEND AWAIT
+    // Stack 3 - Last
     console.log('updateAllData action')
     commit('setAllNotes', newNotes)
-    commit('setCategories', getCleanCategories(state.allNotes))
+    commit('setCategories', getCleanCategories(newNotes))
   },
-  updateNotes ({ commit, state, dispatch }: ActionContext) {
+  mergeNotesWithCurrentNote ({ state, dispatch }: ActionContext) {
+    // Stack 2 - Second
     const newNotes = state.allNotes.filter((note: any) => note.id !== state.currentNote.id)
     newNotes.push(state.currentNote)
     dispatch('updateAllData', newNotes)
   },
   updateCurrentNote ({ state, commit, dispatch }: ActionContext, modifiedProp: any) {
+    // Move these stacks (functions) to web worker as a side process - Can be CPU Heavy to do this for every keyinput.
+    // Stack 1 - Start
     const currentNote = {
       ...state.currentNote,
       ...modifiedProp
@@ -54,7 +64,7 @@ const actions = {
     }
     currentNote.modified = new Date().getTime()
     commit('setCurrentNote', currentNote)
-    dispatch('updateNotes')
+    dispatch('mergeNotesWithCurrentNote')
   },
   setCategoryColors ({ state, dispatch }: ActionContext, payload: SetCategoryColorContext) {
     const updatedNotes = state.allNotes.map((note: any) => {
