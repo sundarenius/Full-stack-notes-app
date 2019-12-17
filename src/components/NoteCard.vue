@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <v-row>
-      <v-col :xs="xs" :sm="sm" :md="md" :key="notes.id" v-for="notes in allNotes">
+      <v-col :cols="cols" :xs="xs" :sm="sm" :md="md" :key="notes.id" v-for="notes in allNotes">
         <v-card
           @click="setCurrentNoteMethod(notes)"
           :class="{ 'overview-card-style' : true, [notes.color] : true }"
@@ -55,6 +55,7 @@ export default class NoteCard extends Vue {
   @Prop([ String, Number ]) readonly xs: any
   @Prop([ String, Number ]) readonly md: any
   @Prop([ String, Number ]) readonly sm: any
+  @Prop([ String, Number ]) readonly cols: any
   allNotesState!: any
 
   setCurrentNoteMethod (notes: any) {

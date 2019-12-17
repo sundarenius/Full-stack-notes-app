@@ -5,6 +5,9 @@ import store from './store/store'
 import './registerServiceWorker'
 import vuetify from './plugins/vuetify'
 import './styles/index.scss'
+import setUpMixins from '@/utils/mixins'
+
+Vue.mixin(setUpMixins(vuetify))
 
 Vue.config.productionTip = false;
 

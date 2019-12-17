@@ -12,20 +12,24 @@
         hide-details
         @change="searchInputChange"
         label="Search"
+        :rounded="$smallScreen"
         prepend-inner-icon="mdi-magnify"
         v-model="searchInput"
       />
 
       <v-spacer />
-      <v-btn @click="setNewNote" class="success lighten-2 secondary--text px-5">
-        New note
-        <v-icon small class="ml-1">mdi-plus</v-icon>
+      <v-btn v-if="!$smallScreen" @click="setNewNote" :rounded="$smallScreen" class="success lighten-2 secondary--text px-5">
+        <span v-if="!$smallScreen">New note</span>
+        <v-icon :small="!$smallScreen" :class="{ 'ml-1' : !$smallScreen }">mdi-plus</v-icon>
       </v-btn>
-      <v-btn @click="logOut" outlined class="ml-3 secondary--text" icon>
+      <v-btn @click="logOut" v-if="!$smallScreen" outlined class="ml-3 secondary--text" icon>
         <v-icon class="white--text">mdi-logout</v-icon>
       </v-btn>
       <v-btn v-if="0" rounded @click="test" class="ml-3 success lighten-2 secondary--text">
         TEST
+      </v-btn>
+      <v-btn @click="setSidebarMethod" v-if="$smallScreen" icon class="ml-1">
+        <v-icon>mdi-menu</v-icon>
       </v-btn>
     </v-app-bar>
 </template>
@@ -49,6 +53,7 @@ import { NotesContext, CategoriesContext } from '@/utils/interfaces'
 export default class Header extends Vue {
   @Mutation('setCurrentNote') setCurrentNote: any
   @Mutation('showEditorContent') showEditorContent: any
+  @Action('setSidebar') setSidebar: any
   @Action('hideShowEditorContent') hideShowEditorContent: any
   @Action('logOut') logOut: any
 
@@ -63,6 +68,10 @@ export default class Header extends Vue {
   @Watch('searchInput')
   onSearchInput (input: string) {
     console.log(input)
+  }
+
+  setSidebarMethod () {
+    this.setSidebar()
   }
 
   setNote (note: NotesContext) {

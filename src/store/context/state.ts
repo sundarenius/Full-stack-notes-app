@@ -1,6 +1,7 @@
 const state = {
   isAuth: true, // set to true when developing the site is done,
   currentCategory: 'All',
+  sidebar: false,
   currentNote: {
     id: 0,
     title: 'New note',

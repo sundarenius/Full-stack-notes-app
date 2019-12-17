@@ -50,7 +50,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn block color="primary">Login</v-btn>
+                <v-btn @click="loginMethod" block color="primary">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -62,9 +62,15 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import { Action } from 'vuex-class'
 
 @Component
 export default class LoginModal extends Vue {
+  @Action('logIn') logIn: any
+
+  loginMethod () {
+    this.logIn()
+  }
   created (): void {
     console.log('created from loginmodal.vue')
   }

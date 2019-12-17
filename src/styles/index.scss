@@ -1,13 +1,34 @@
+$break-sm: 960px;
+
 .sidebar-width {
+  z-index: 500;
   width: var(--sidebar-width)!important;
+}
+.v-text-field.v-text-field--solo .v-input__control {
+  @media screen and (max-width: $break-sm) {
+    min-height:35px;
+    height: 35px;
+    margin-top: -9px;
+  }
 }
 .main-content-style {
   margin-left: calc(var(--sidebar-width) + 10px)!important;
   margin-top: 60px;
+  @media screen and (max-width: $break-sm) {
+    margin-left: 0px!important;
+  }
+}
+.v-toolbar .v-input {
+  @media screen and (max-width: $break-sm) {
+    margin-top: 6px!important;
+  }
 }
 .header-style {
   margin-left: calc(var(--sidebar-width) + 10px)!important;
   background: transparent!important;
+  @media screen and (max-width: $break-sm) {
+    margin-left: 0px!important;
+  }
 }
 .close-icon {
   position: absolute;

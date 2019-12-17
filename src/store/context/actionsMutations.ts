@@ -21,14 +21,27 @@ const mutations = {
   },
   logOut (state: any) {
     state.isAuth = false
+  },
+  logIn (state: any) {
+    state.isAuth = true
+  },
+  setSidebar (state: any, payload: boolean) {
+    state.sidebar = payload
   }
 }
 
 const actions = {
+  setSidebar ({ commit, state }: ActionContext) {
+    const oppositeBoolean = !state.sidebar
+    commit('setSidebar', oppositeBoolean)
+  },
   logOut ({ commit }: ActionContext) {
     commit('logOut')
   },
-  setInitialData: async ({ commit, state }: ActionContext) => {
+  logIn ({ commit }: ActionContext) {
+    commit('logIn')
+  },
+  setInitialData: async ({ commit }: ActionContext) => {
     // API GET AWAIT -- use MOCK notes intil that
     console.log('setInitialData action')
     const notesRes = MockNotes

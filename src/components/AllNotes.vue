@@ -1,7 +1,7 @@
 <template>
   <div class="card-container-overview">
     <h2 class="title mb-2" style="margin-top:-8px">Latest</h2>
-    <NoteCard :xs="12" :md="12" :allNotes="allNotes" />
+    <NoteCard :cols="12" :allNotes="allNotes" />
   </div>
 </template>
 
