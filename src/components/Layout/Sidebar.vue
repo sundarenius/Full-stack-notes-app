@@ -23,7 +23,7 @@
         dense
         nav
       >
-      <v-btn depressed class="transparent my-2" block>
+      <v-btn @click="setNewNote" depressed class="transparent my-2" block>
         <v-list-item
         >
           <v-list-item-icon>
@@ -66,7 +66,7 @@
         dense
         nav
       >
-      <v-btn depressed class="transparent" block>
+      <v-btn @click="logOut" depressed class="transparent" block>
         <v-list-item
         >
           <v-list-item-icon>
@@ -100,25 +100,32 @@ import { CategoriesContext, NotesContext } from '@/utils/interfaces'
   }
 })
 export default class Sidebar extends Vue {
+  @Mutation('setCurrentNote') setCurrentNote: any
   @Mutation('setActiveCategory') setActiveCategory: any
   @Mutation('setSidebar') setSidebar: any
   @Action('hideShowEditorContent') hideShowEditorContent: any
+  @Action('logOut') logOut: any
 
   public sidebarState!: boolean
   public allCategories?: CategoriesContext[]
   private currentCategory!: string
-  private smallScreenNavigation: object[] = [
-    {
-      text: 'New note',
-      icon: 'mdi-plus',
-      action: ''
-    },
-    {
-      text: 'Logout',
-      icon: 'mdi-account',
-      action: ''
+
+  setNote (note: NotesContext) {
+    this.setCurrentNote(note)
+    this.hideShowEditorContent(true)
+  }
+
+  setNewNote () {
+    const note = {
+      id: 0,
+      title: 'New note',
+      text: '',
+      category: 'Randoms',
+      color: '',
+      modified: 0
     }
-  ]
+    this.setNote(note)
+  }
 
   setActiveCategoryMethod (category: string) {
     this.hideShowEditorContent(false)
