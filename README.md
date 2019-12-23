@@ -1,6 +1,6 @@
 # Full-stack-notes-app
 
-# This project was built with:
+### This project was built with:
 
 - Vue
 - Typescript
