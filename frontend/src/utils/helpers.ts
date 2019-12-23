@@ -1,5 +1,6 @@
 import { NotesContext, CategoriesContext } from '@/utils/interfaces'
 import { dynamicSort } from '../../random_modules/index.js'
+import router from '../router/router'
 
 export const setUpCssVars = (theme: undefined | string = 'default', height: any): any => {
   const themeObj: any = {}
@@ -28,6 +29,11 @@ export const setUpCssVars = (theme: undefined | string = 'default', height: any)
   return headEl && headEl.appendChild(styleEl)
 }
 
+export const authNavigate = (path: string) => {
+  console.log('authnavigate')
+  console.log(router.push(path))
+}
+
 export const getCleanCategories = (NewNotes: any) => {
   const categories: any[] = [
     {  category: 'All', id: 'x1', total: 0, icon: 'mdi-view-dashboard' },
@@ -43,7 +49,7 @@ export const getCleanCategories = (NewNotes: any) => {
   const filteredCategories: CategoriesContext[] = categories.filter((val) => {
     val.total = categories.filter((c: any) => c.category === val.category).length
     if (val.category === 'All') {
-      val.total = categories.length - 1
+      val.total = categories.length - 2
     }
     if (val.category === 'Randoms') {
       val.total = val.total - 1

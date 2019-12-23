@@ -36,7 +36,9 @@ router.post('/login', (req,res) => {
   const email = req.body.email
   const password = req.body.password
   const errors = {}
-  User.findOne({ email })
+  console.log(email)
+  console.log(password)
+  User.findOne({ emailAddress: email })
     .then(user => {
       if (!user) {
         errors.msg = "No Account Found"

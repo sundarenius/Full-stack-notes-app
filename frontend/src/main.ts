@@ -9,6 +9,8 @@ import setUpMixins from '@/utils/mixins'
 
 Vue.mixin(setUpMixins(vuetify))
 
+console.log(router)
+
 Vue.config.productionTip = false;
 
 new Vue({

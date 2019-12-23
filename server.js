@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
 // Middlewares
-app.use(passport.initialize()); 
+app.use(passport.initialize())
 app.use(cors())
 
 app.use(bodyParser.urlencoded({
@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(bodyParser.json())
 
-app.set('port', port);
+app.set('port', port)
 
 console.log(process.env.DATABASE_URL)
 mongoose.set('useCreateIndex', true)

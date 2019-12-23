@@ -128,7 +128,7 @@ export default class LoginModal extends Vue {
   @Action('logIn') logIn: any
   @Action('registerUser') registerUser: any
 
-  showSignUpModal: boolean = true
+  showSignUpModal: boolean = false
   newUser: any = {
     name: '',
     emailAddress: '',

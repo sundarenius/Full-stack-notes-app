@@ -25,7 +25,7 @@
       <v-btn @click="logOut" v-if="!$smallScreen" outlined class="ml-3 secondary--text" icon>
         <v-icon class="white--text">mdi-logout</v-icon>
       </v-btn>
-      <v-btn v-if="1" rounded @click="test" class="ml-3 success lighten-2 secondary--text">
+      <v-btn v-if="0" rounded @click="test" class="ml-3 success lighten-2 secondary--text">
         TEST
       </v-btn>
       <v-btn @click="setSidebarMethod" v-if="$smallScreen" icon class="ml-1">

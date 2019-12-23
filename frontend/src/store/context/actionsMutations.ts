@@ -1,5 +1,9 @@
 import { ActionContext, NotesContext, CategoriesContext, SetCategoryColorContext } from '@/utils/interfaces'
-import { getCleanCategories, setUpCssVars } from '@/utils/helpers'
+import {
+  getCleanCategories,
+  setUpCssVars,
+  authNavigate
+} from '@/utils/helpers'
 import MockNotes from '@/utils/Mocks'
 import uuid from 'uuid/v4'
 import { getAllNotes, updateNote, loginUser, registerUser } from '@/axios/service'
@@ -22,9 +26,11 @@ const mutations = {
   },
   logOut (state: any) {
     state.isAuth = false
+    authNavigate('/login')
   },
   logIn (state: any) {
     state.isAuth = true
+    authNavigate('/')
   },
   setSidebar (state: any, payload: boolean) {
     state.sidebar = payload
