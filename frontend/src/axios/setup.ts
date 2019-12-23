@@ -1,7 +1,8 @@
 import axios from 'axios'
 
+const base = window.location.origin.includes('localhost') ? 'http://localhost:3000' : window.location.origin
 export const API = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: `${base}/api`,
   timeout: 1000,
   headers: {
     'X-Custom-Header': 'foobar'
@@ -9,7 +10,7 @@ export const API = axios.create({
 })
 
 export const USER = axios.create({
-  baseURL: 'http://localhost:3000/login',
+  baseURL: `${base}/login`,
   timeout: 1000,
   headers: {
     'X-Custom-Header': 'foobar'
