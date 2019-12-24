@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "build": "",
+    "build": "webpack",
     "frontend": "npm run serve --prefix frontend",
     "devStart": "nodemon server.js",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run start"
@@ -27,7 +27,7 @@
   "devDependencies": {
     "nodemon": "^2.0.2"
   },
-  "engines": { 
+  "engines": {
     "node": "11.0.0",
     "npm": "6.13.4"
   }
