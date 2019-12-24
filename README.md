@@ -15,3 +15,7 @@
 This is just a DEMO app so all notes are being shared across all users.
 
 App is live on https://mynotesapplication.herokuapp.com/
+
+### Maintaned and developed by
+
+- Håkan Sundström
