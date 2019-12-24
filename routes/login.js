@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const User = require('../models/user')
+const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 require('dotenv').config()
 const secret = process.env.SECRET || 'the default secret'
