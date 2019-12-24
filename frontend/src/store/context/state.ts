@@ -1,5 +1,6 @@
 const state = {
-  isAuth: true, // set to true when developing the site is done,
+  loginError: '',
+  isAuth: false, // set to true when developing the site is done,
   currentCategory: 'All',
   sidebar: false,
   currentNote: {

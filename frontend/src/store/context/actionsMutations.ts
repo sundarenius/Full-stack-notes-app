@@ -9,6 +9,9 @@ import uuid from 'uuid/v4'
 import { getAllNotes, updateNote, loginUser, registerUser } from '@/axios/service'
 
 const mutations = {
+  setLoginError (state: any, text: string): void {
+    state.loginError = text
+  },
   setAllNotes (state: any, notes: NotesContext[]): void {
     state.allNotes = notes
   },
@@ -53,6 +56,9 @@ const actions = {
     console.log(res)
     if (res.status === 'success') {
       commit('logIn')
+      commit('setLoginError', '')
+    } else {
+      commit('setLoginError', 'Wrong password/email')
     }
   },
   registerUser: async ({ commit }: ActionContext, user: any) => {

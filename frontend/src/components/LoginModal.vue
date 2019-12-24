@@ -27,6 +27,9 @@
                   </div>
                 </v-toolbar-title>
               </v-toolbar>
+              <div v-show="loginError.length" class="login-notice">
+                {{ loginError }}
+              </div>
               <v-card-text>
                 <v-form>
                   <v-text-field
@@ -122,8 +125,16 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
+import { mapState } from 'vuex'
 
-@Component
+@Component({
+  name: 'Login-modal',
+  computed: {
+    ...mapState({
+      loginError: ({ context }: any) => context.loginError
+    })
+  }
+})
 export default class LoginModal extends Vue {
   @Action('logIn') logIn: any
   @Action('registerUser') registerUser: any
@@ -175,5 +186,11 @@ export default class LoginModal extends Vue {
     cursor: pointer;
     font-weight: bold;
   }
+}
+.login-notice {
+  width: 100%;
+  padding: 10px;
+  background: #ff6666;
+  text-align: center;
 }
 </style>

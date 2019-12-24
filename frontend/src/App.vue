@@ -42,6 +42,9 @@ export default class App extends Vue {
     setUpCssVars(undefined, undefined)
     this.setInitialData()
     this.$vuetify.theme.dark = true
+    if (!this.isAuth) {
+      this.$router.push('/login')
+    }
   }
 }
 </script>
